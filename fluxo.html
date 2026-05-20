@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fluxo Interativo - Associador Custas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    :root {
+      --bg: #0a1628;
+      --bg2: #101d33;
+      --card: rgba(18, 31, 56, 0.92);
+      --card2: rgba(26, 42, 74, 0.96);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.62);
+
+      --yellow: #ffd166;
+      --purple: #b06eff;
+      --cyan: #00d4ff;
+      --green: #00e5a0;
+      --blue: #4da3ff;
+      --pink: #ff6ec7;
+      --border: rgba(255,255,255,.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(26,111,255,.22), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(176,110,255,.18), transparent 32%),
+        var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 38px 38px;
+      pointer-events: none;
+      opacity: .6;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 42px 0 70px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border: 1px solid rgba(0,212,255,.35);
+      border-radius: 999px;
+      background: rgba(0,212,255,.08);
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .14em;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 1.02;
+      background: linear-gradient(135deg, #fff 35%, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      max-width: 780px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 470px 1fr;
+      gap: 34px;
+      align-items: start;
+      margin-top: 34px;
+    }
+
+    .flow-column {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .step {
+      width: min(410px, 100%);
+      min-height: 86px;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      background: var(--card);
+      color: #fff;
+      padding: 15px 18px;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 14px 38px rgba(0,0,0,.20);
+      transition:
+        transform .16s ease,
+        box-shadow .16s ease,
+        border-color .16s ease,
+        background .16s ease;
+      display: grid;
+      grid-template-columns: 46px 1fr;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .step:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 46px rgba(0,0,0,.32);
+    }
+
+    .step.active {
+      transform: translateY(-2px) scale(1.012);
+      box-shadow:
+        0 0 0 4px rgba(176,110,255,.15),
+        0 18px 50px rgba(0,0,0,.42);
+    }
+
+    .icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+      background: rgba(255,255,255,.06);
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .step-mini {
+      margin-top: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: rgba(255,255,255,.58);
+      line-height: 1.35;
+    }
+
+    .doc {
+      border-color: rgba(255,209,102,.75);
+    }
+    .doc .icon {
+      color: var(--yellow);
+      background: rgba(255,209,102,.12);
+    }
+    .doc.active {
+      border-color: var(--yellow);
+    }
+
+    .assoc {
+      border-color: rgba(176,110,255,.78);
+      background: linear-gradient(135deg, rgba(25,28,45,.95), rgba(49,36,100,.72));
+    }
+    .assoc .icon {
+      color: var(--purple);
+      background: rgba(176,110,255,.14);
+    }
+    .assoc.active {
+      border-color: var(--purple);
+    }
+
+    .extract {
+      border-color: rgba(0,229,160,.72);
+    }
+    .extract .icon {
+      color: var(--green);
+      background: rgba(0,229,160,.12);
+    }
+    .extract.active {
+      border-color: var(--green);
+    }
+
+    .classify {
+      border-color: rgba(255,110,199,.72);
+    }
+    .classify .icon {
+      color: var(--pink);
+      background: rgba(255,110,199,.12);
+    }
+    .classify.active {
+      border-color: var(--pink);
+    }
+
+    .validate {
+      border-color: rgba(77,163,255,.72);
+    }
+    .validate .icon {
+      color: var(--blue);
+      background: rgba(77,163,255,.12);
+    }
+    .validate.active {
+      border-color: var(--blue);
+    }
+
+    .final {
+      border-color: rgba(0,229,160,.88);
+      background: linear-gradient(135deg, rgba(16,40,36,.96), rgba(12,74,55,.74));
+    }
+    .final .icon {
+      color: var(--green);
+      background: rgba(0,229,160,.14);
+    }
+    .final.active {
+      border-color: var(--green);
+    }
+
+    .arrow {
+      height: 50px;
+      width: 32px;
+      display: grid;
+      place-items: center;
+      opacity: .9;
+    }
+
+    .arrow svg {
+      overflow: visible;
+    }
+
+    .arrow-line {
+      stroke-dasharray: 6 6;
+      animation: dash 1.4s linear infinite;
+    }
+
+    @keyframes dash {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    .details {
+      position: sticky;
+      top: 24px;
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.07), rgba(255,255,255,.025)),
+        rgba(12, 24, 44, .86);
+      box-shadow: 0 20px 65px rgba(0,0,0,.30);
+      padding: 26px;
+      min-height: 438px;
+      overflow: hidden;
+    }
+
+    .details::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      right: -95px;
+      top: -95px;
+      background: radial-gradient(circle, rgba(0,212,255,.22), transparent 65%);
+      pointer-events: none;
+    }
+
+    .details-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .details-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: rgba(176,110,255,.14);
+      color: var(--purple);
+      font-size: 25px;
+      border: 1px solid rgba(176,110,255,.25);
+    }
+
+    .details-kicker {
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .13em;
+      margin-bottom: 5px;
+    }
+
+    .details-title {
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.08;
+    }
+
+    .details-body {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section {
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(255,255,255,.08);
+    }
+
+    .section h3 {
+      margin: 0 0 9px;
+      color: rgba(255,255,255,.84);
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .section p {
+      margin: 0;
+      color: rgba(255,255,255,.72);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.72);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .hint {
+      margin-top: 18px;
+      padding: 13px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(0,212,255,.18);
+      background: rgba(0,212,255,.06);
+      color: rgba(255,255,255,.70);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .legend {
+      margin-top: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      color: rgba(255,255,255,.58);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.075);
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    @media (max-width: 920px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .details {
+        position: relative;
+        top: auto;
+        width: min(620px, 100%);
+        margin: 0 auto;
+        order: -1;
+      }
+
+      .flow-column {
+        order: 2;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .page {
+        width: min(100vw - 18px, 1180px);
+        padding-top: 30px;
+      }
+
+      .details {
+        padding: 20px;
+        border-radius: 22px;
+      }
+
+      .step {
+        grid-template-columns: 42px 1fr;
+        min-height: 80px;
+        padding: 14px;
+      }
+
+      .icon {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .step-title {
+        font-size: 15px;
+      }
+
+      .subtitle {
+        font-size: 12.5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="header">
+      <div class="badge">
+        <i class="fa-solid fa-diagram-project"></i>
+        Fluxo interativo
+      </div>
+      <h1>Associador Custas</h1>
+      <p class="subtitle">
+        Pipeline vertical para recebimento, leitura, classificação, validação e associação de guia avulsa de custas.
+        Clique em qualquer etapa para ver o que ela faz.
+      </p>
+    </header>
+
+    <section class="layout">
+      <div class="flow-column">
+
+        <button class="step doc active"
+          data-step="1"
+          data-icon="fa-regular fa-file-lines"
+          data-title="Novo Doc PJE"
+          data-role="Evento inicial do fluxo"
+          data-desc="O fluxo começa quando um novo documento é inserido ou identificado no PJe. Esse evento funciona como gatilho para o Associador Custas analisar se o documento pode conter uma guia avulsa de custas."
+          data-inputs="processo_numero, doc_origem_id, fonte_dados"
+          data-outputs="Evento recebido, metadados básicos do documento"
+          data-note="Essa etapa não decide nada ainda. Ela apenas inicia o pipeline e entrega os dados mínimos para o orquestrador.">
+          <span class="icon"><i class="fa-regular fa-file-lines"></i></span>
+          <span>
+            <span class="step-title">Novo Doc PJE</span>
+            <span class="step-mini">processo_numero · doc_origem_id · fonte_dados</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#ffd166" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#ffd166"/>
+          </svg>
+        </div>
+
+        <button class="step assoc"
+          data-step="2"
+          data-icon="fa-solid fa-network-wired"
+          data-title="ASSOCIADOR CUSTAS"
+          data-role="Orquestrador do fluxo"
+          data-desc="Recebe o evento do documento novo e organiza a próxima ação. Nesta primeira passagem, ele decide que precisa obter o conteúdo textual do documento antes de qualquer classificação."
+          data-inputs="processo_numero, doc_origem_id, fonte_dados"
+          data-outputs="Chamada para extração de texto"
+          data-note="O Associador Custas funciona como controlador do pipeline, mas agora aparece de forma sequencial, sem setas de retorno.">
+          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span>
+            <span class="step-title">ASSOCIADOR CUSTAS</span>
+            <span class="step-mini">recebe evento e aciona extração</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#b06eff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#b06eff"/>
+          </svg>
+        </div>
+
+        <button class="step extract"
+          data-step="3"
+          data-icon="fa-solid fa-align-left"
+          data-title="Extrair Texto"
+          data-role="Leitura do conteúdo do documento"
+          data-desc="Consulta o documento de origem e extrai o texto necessário para análise posterior. Essa etapa transforma o documento bruto em uma representação textual utilizável pelo modelo classificador e pelos extratores."
+          data-inputs="doc_origem_id, fonte_dados"
+          data-outputs="texto_doc"
+          data-note="Aqui pode haver chamada para API do PJe, OCR ou mecanismo interno de leitura, dependendo do formato do documento.">
+          <span class="icon"><i class="fa-solid fa-align-left"></i></span>
+          <span>
+            <span class="step-title">Extrair Texto</span>
+            <span class="step-mini">doc_origem_id · fonte_dados</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#00e5a0" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#00e5a0"/>
+          </svg>
+        </div>
+
+        <button class="step assoc"
+          data-step="4"
+          data-icon="fa-solid fa-network-wired"
+          data-title="ASSOCIADOR CUSTAS"
+          data-role="Recebe texto extraído"
+          data-desc="Recebe o texto extraído do documento e prepara a chamada ao modelo classificador. A função desta etapa é coordenar a transição entre leitura do documento e análise semântica."
+          data-inputs="texto_doc, processo_numero, doc_origem_id"
+          data-outputs="Chamada para modelo classificador"
+          data-note="Se o texto vier vazio, ilegível ou insuficiente, aqui pode ser previsto tratamento de erro ou encerramento controlado do fluxo.">
+          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span>
+            <span class="step-title">ASSOCIADOR CUSTAS</span>
+            <span class="step-mini">encaminha texto para classificação</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#b06eff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#b06eff"/>
+          </svg>
+        </div>
+
+        <button class="step classify"
+          data-step="5"
+          data-icon="fa-solid fa-microchip"
+          data-title="Modelo Classificador"
+          data-role="Identificação de documento de custas"
+          data-desc="Analisa o texto do documento e identifica se ele parece ser uma guia de custas, comprovante relacionado ou outro documento relevante para associação de guia avulsa."
+          data-inputs="texto_doc"
+          data-outputs="isCustas, confiança_classificação, justificativa_modelo"
+          data-note="A saída principal é uma decisão do tipo verdadeiro/falso, indicando se o fluxo deve continuar para extração de dados financeiros.">
+          <span class="icon"><i class="fa-solid fa-microchip"></i></span>
+          <span>
+            <span class="step-title">Modelo Classificador</span>
+            <span class="step-mini">isCustas · confiança · justificativa</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#ff6ec7" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#ff6ec7"/>
+          </svg>
+        </div>
+
+        <button class="step assoc"
+          data-step="6"
+          data-icon="fa-solid fa-network-wired"
+          data-title="ASSOCIADOR CUSTAS"
+          data-role="Decisão de continuidade"
+          data-desc="Recebe o resultado do classificador. Se o documento for identificado como relacionado a custas, o fluxo segue para extração do Nosso Número ou código de barras. Caso contrário, o fluxo pode ser encerrado ou registrado como não aplicável."
+          data-inputs="isCustas, confiança_classificação, texto_doc"
+          data-outputs="Decisão de continuidade do fluxo"
+          data-note="Essa é uma etapa de controle importante: evita tentar validar ou associar documentos que não são guias ou comprovantes de custas.">
+          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span>
+            <span class="step-title">ASSOCIADOR CUSTAS</span>
+            <span class="step-mini">decide se o fluxo continua</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#b06eff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#b06eff"/>
+          </svg>
+        </div>
+
+        <button class="step extract"
+          data-step="7"
+          data-icon="fa-solid fa-barcode"
+          data-title="Extrair Nosso Número / Código de Barras"
+          data-role="Extração de identificadores financeiros"
+          data-desc="Busca no texto do documento informações como Nosso Número, linha digitável, código de barras ou outros identificadores necessários para consultar e validar a guia avulsa."
+          data-inputs="texto_doc"
+          data-outputs="nosso_numero, codigo_barras, linha_digitavel"
+          data-note="Essa etapa pode usar regex, regras heurísticas ou modelo de extração estruturada para localizar os identificadores.">
+          <span class="icon"><i class="fa-solid fa-barcode"></i></span>
+          <span>
+            <span class="step-title">Extrair Nosso Número / Código de Barras</span>
+            <span class="step-mini">nosso_numero · codigo_barras</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#00e5a0" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#00e5a0"/>
+          </svg>
+        </div>
+
+        <button class="step assoc"
+          data-step="8"
+          data-icon="fa-solid fa-network-wired"
+          data-title="ASSOCIADOR CUSTAS"
+          data-role="Preparação para validação"
+          data-desc="Recebe os identificadores extraídos e monta a chamada de validação da guia. Também pode verificar se há dados mínimos suficientes para prosseguir."
+          data-inputs="nosso_numero, codigo_barras, processo_numero, fonte_dados"
+          data-outputs="Requisição para validação da guia"
+          data-note="Se não for encontrado Nosso Número ou código de barras, o fluxo pode registrar pendência para conferência manual.">
+          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span>
+            <span class="step-title">ASSOCIADOR CUSTAS</span>
+            <span class="step-mini">organiza dados para validação</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#b06eff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#b06eff"/>
+          </svg>
+        </div>
+
+        <button class="step validate"
+          data-step="9"
+          data-icon="fa-solid fa-shield-halved"
+          data-title="Validar Guia Avulsa"
+          data-role="Consulta e conferência da guia"
+          data-desc="Consulta a base ou serviço de custas para verificar se a guia avulsa existe, se é válida, se está paga e se os dados são compatíveis com o processo."
+          data-inputs="nosso_numero, codigo_barras"
+          data-outputs="status_guia, valor, data_pagamento, dados_validados"
+          data-note="Essa etapa reduz risco de associação indevida, pois valida a guia antes da vinculação final ao processo.">
+          <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+          <span>
+            <span class="step-title">Validar Guia Avulsa</span>
+            <span class="step-mini">status_guia · valor · pagamento</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#4da3ff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#4da3ff"/>
+          </svg>
+        </div>
+
+        <button class="step assoc"
+          data-step="10"
+          data-icon="fa-solid fa-network-wired"
+          data-title="ASSOCIADOR CUSTAS"
+          data-role="Decisão final de associação"
+          data-desc="Recebe o resultado da validação. Se a guia estiver regular, prepara a chamada final para associar a guia avulsa ao processo correto."
+          data-inputs="status_guia, dados_validados, processo_numero, fonte_dados"
+          data-outputs="Comando de associação da guia"
+          data-note="Se a guia não estiver paga, for inválida ou incompatível, o fluxo pode registrar falha e não realizar associação automática.">
+          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span>
+            <span class="step-title">ASSOCIADOR CUSTAS</span>
+            <span class="step-mini">decide associação final</span>
+          </span>
+        </button>
+
+        <div class="arrow">
+          <svg width="26" height="50">
+            <path class="arrow-line" d="M13 0 L13 38" stroke="#b06eff" stroke-width="3" fill="none"/>
+            <polygon points="5,36 21,36 13,49" fill="#b06eff"/>
+          </svg>
+        </div>
+
+        <button class="step final"
+          data-step="11"
+          data-icon="fa-solid fa-link"
+          data-title="Associar Guia Avulsa"
+          data-role="Vinculação final ao processo"
+          data-desc="Realiza a associação da guia avulsa validada ao processo correspondente, registrando o vínculo e encerrando o fluxo automatizado."
+          data-inputs="numero_processo, fonte_dados, nosso_numero"
+          data-outputs="Guia associada, registro da operação, fim do fluxo"
+          data-note="Essa é a etapa final do pipeline. Depois dela, o processo passa a ter a guia corretamente vinculada, conforme a validação realizada.">
+          <span class="icon"><i class="fa-solid fa-link"></i></span>
+          <span>
+            <span class="step-title">Associar Guia Avulsa</span>
+            <span class="step-mini">numero_processo · fonte_dados · nosso_numero</span>
+          </span>
+        </button>
+
+      </div>
+
+      <aside class="details" id="detailsPanel">
+        <div class="details-top">
+          <div class="details-icon" id="detailsIcon">
+            <i class="fa-regular fa-file-lines"></i>
+          </div>
+          <div>
+            <div class="details-kicker" id="detailsKicker">Etapa 1</div>
+            <div class="details-title" id="detailsTitle">Novo Doc PJE</div>
+          </div>
+        </div>
+
+        <div class="details-body">
+          <div class="section">
+            <h3>Papel da etapa</h3>
+            <p id="detailsRole">Evento inicial do fluxo</p>
+          </div>
+
+          <div class="section">
+            <h3>O que faz</h3>
+            <p id="detailsDesc">
+              O fluxo começa quando um novo documento é inserido ou identificado no PJe.
+            </p>
+          </div>
+
+          <div class="section">
+            <h3>Entradas</h3>
+            <div class="chips" id="detailsInputs"></div>
+          </div>
+
+          <div class="section">
+            <h3>Saídas</h3>
+            <div class="chips" id="detailsOutputs"></div>
+          </div>
+
+          <div class="hint" id="detailsNote">
+            Clique em qualquer etapa do fluxo para atualizar este painel.
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <div class="legend">
+      <span><span class="dot" style="background: var(--yellow);"></span> Documento / evento</span>
+      <span><span class="dot" style="background: var(--purple);"></span> Associador Custas</span>
+      <span><span class="dot" style="background: var(--green);"></span> Extração</span>
+      <span><span class="dot" style="background: var(--pink);"></span> IA / classificação</span>
+      <span><span class="dot" style="background: var(--blue);"></span> Validação</span>
+    </div>
+  </main>
+
+  <script>
+    const steps = document.querySelectorAll(".step");
+
+    const detailsIcon = document.getElementById("detailsIcon");
+    const detailsKicker = document.getElementById("detailsKicker");
+    const detailsTitle = document.getElementById("detailsTitle");
+    const detailsRole = document.getElementById("detailsRole");
+    const detailsDesc = document.getElementById("detailsDesc");
+    const detailsInputs = document.getElementById("detailsInputs");
+    const detailsOutputs = document.getElementById("detailsOutputs");
+    const detailsNote = document.getElementById("detailsNote");
+
+    function makeChips(container, value) {
+      container.innerHTML = "";
+
+      const items = value
+        .split(",")
+        .map(item => item.trim())
+        .filter(Boolean);
+
+      items.forEach(item => {
+        const chip = document.createElement("span");
+        chip.className = "chip";
+        chip.textContent = item;
+        container.appendChild(chip);
+      });
+    }
+
+    function setActiveStep(step) {
+      steps.forEach(s => s.classList.remove("active"));
+      step.classList.add("active");
+
+      const iconClass = step.dataset.icon;
+
+      detailsIcon.innerHTML = `<i class="${iconClass}"></i>`;
+      detailsKicker.textContent = `Etapa ${step.dataset.step}`;
+      detailsTitle.textContent = step.dataset.title;
+      detailsRole.textContent = step.dataset.role;
+      detailsDesc.textContent = step.dataset.desc;
+      detailsNote.textContent = step.dataset.note;
+
+      makeChips(detailsInputs, step.dataset.inputs);
+      makeChips(detailsOutputs, step.dataset.outputs);
+    }
+
+    steps.forEach(step => {
+      step.addEventListener("click", () => setActiveStep(step));
+
+      step.addEventListener("keydown", event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          setActiveStep(step);
+        }
+      });
+    });
+
+    // Inicializa painel com a primeira etapa
+    setActiveStep(document.querySelector(".step.active") || steps[0]);
+  </script>
+</body>
+</html>
