@@ -3,9 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha primeira página</title>
+    <title>Custas Judiciais no Tribunal de Justiça de Rondônia</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.7;
+            margin: 40px;
+            color: #222;
+            background-color: #f9f9f9;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 40px;
+            color: #1e3a5f;
+        }
+
+        h2 {
+            margin-top: 40px;
+            border-bottom: 2px solid #1e3a5f;
+            padding-bottom: 10px;
+            color: #1e3a5f;
+        }
+
+        p {
+            text-align: justify;
+            margin-top: 15px;
+        }
+
+        ul {
+            margin-top: 15px;
+            padding-left: 25px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .referencias p {
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Olá, Mundo!</h1>
+
+    <div class="container">
+
+        <h1>
+            Custas Judiciais no Tribunal de Justiça de Rondônia:
+            Automação da Associação das Guias Avulsas
+        </h1>
+
+        <h2>RESUMO</h2>
+
+        <p>
+            Este trabalho apresenta uma proposta de automação do processo de associação
+            de guias avulsas de custas processuais no Tribunal de Justiça de Rondônia.
+            Atualmente, parte desse procedimento ocorre de forma manual, demandando
+            tempo operacional e aumentando a possibilidade de inconsistências.
+            A solução proposta utiliza integração entre sistemas, arquitetura orientada
+            a eventos, processamento automatizado de documentos e inteligência artificial
+            para identificar documentos de custas, extrair informações relevantes e
+            realizar automaticamente a associação das guias aos respectivos processos
+            judiciais. O projeto se enquadra no contexto de Tecnologias Emergentes,
+            utilizando conceitos modernos de automação inteligente, interoperabilidade
+            entre sistemas e processamento distribuído.
+        </p>
+
+        <h2>INTRODUÇÃO</h2>
+
+        <p>
+            O avanço das tecnologias digitais tem impulsionado transformações
+            significativas no setor público, especialmente no Poder Judiciário.
+            Nesse contexto, a automação de processos administrativos e judiciais
+            surge como alternativa para aumentar a eficiência operacional,
+            reduzir atividades repetitivas e minimizar erros humanos.
+        </p>
+
+        <p>
+            No Tribunal de Justiça de Rondônia, o processo de associação de guias
+            avulsas de custas processuais ainda demanda etapas operacionais que,
+            em determinados cenários, necessitam de intervenção manual.
+            Esse processo envolve análise documental, validação de informações
+            financeiras e integração entre sistemas distintos.
+        </p>
+
+        <p>
+            Diante desse cenário, este trabalho propõe o desenvolvimento de uma
+            solução automatizada baseada em integração de serviços, mensageria,
+            inteligência artificial e processamento automatizado de documentos,
+            permitindo a identificação e associação automática das guias avulsas
+            aos respectivos processos judiciais.
+        </p>
+
+        <h2>JUSTIFICATIVA</h2>
+
+        <p>
+            A transformação digital no setor público exige soluções capazes de
+            promover maior eficiência, confiabilidade e escalabilidade nos
+            processos administrativos e judiciais.
+        </p>
+
+        <p>
+            A associação manual de guias avulsas representa uma atividade operacional
+            suscetível a falhas humanas, retrabalho e atrasos no fluxo processual.
+            Além disso, o crescimento do volume de processos judiciais torna cada vez
+            mais necessária a adoção de mecanismos automatizados capazes de lidar com
+            grandes quantidades de dados e documentos.
+        </p>
+
+        <p>
+            A utilização de tecnologias emergentes, como inteligência artificial,
+            arquitetura orientada a eventos e integração distribuída entre sistemas,
+            permite modernizar o fluxo de custas processuais, contribuindo para a
+            otimização dos serviços prestados pelo Poder Judiciário.
+        </p>
+
+        <h2>OBJETIVOS</h2>
+
+        <h3>Objetivo Geral</h3>
+
+        <p>
+            Desenvolver uma solução automatizada para associação de guias avulsas
+            de custas processuais no Tribunal de Justiça de Rondônia.
+        </p>
+
+        <h3>Objetivos Específicos</h3>
+
+        <ul>
+            <li>
+                Implementar um mecanismo de consumo de eventos provenientes de filas
+                de mensageria.
+            </li>
+
+            <li>
+                Integrar APIs responsáveis pela obtenção de documentos processuais.
+            </li>
+
+            <li>
+                Utilizar um modelo de aprendizado de máquina para classificação
+                automática de documentos de custas.
+            </li>
+
+            <li>
+                Desenvolver algoritmo para extração do identificador “Nosso Número”
+                presente nos documentos.
+            </li>
+
+            <li>
+                Validar automaticamente se a guia corresponde ao tipo “Avulsa”.
+            </li>
+
+            <li>
+                Realizar a associação automática da guia ao processo judicial por
+                meio de integração sistêmica.
+            </li>
+        </ul>
+
+        <h2>REFERENCIAL TEÓRICO (LEVANTAMENTO BIBLIOGRÁFICO)</h2>
+
+        <p>
+            A automação inteligente de processos tem sido amplamente utilizada em
+            diferentes setores como forma de aumentar produtividade e eficiência.
+            Conceitos como Hyperautomation, Intelligent Process Automation (IPA)
+            e Arquitetura Orientada a Eventos têm ganhado destaque no desenvolvimento
+            de sistemas distribuídos modernos.
+        </p>
+
+        <p>
+            A utilização de inteligência artificial no contexto jurídico também tem
+            crescido significativamente, permitindo classificação automatizada de
+            documentos, extração de informações relevantes e apoio à tomada de decisão.
+        </p>
+
+        <p>
+            Sistemas baseados em mensageria e integração por APIs permitem maior
+            desacoplamento entre componentes, promovendo escalabilidade, tolerância
+            a falhas e comunicação assíncrona entre serviços.
+        </p>
+
+        <p>
+            Nesse contexto, a proposta deste trabalho se fundamenta na combinação
+            dessas tecnologias emergentes para automatizar o fluxo de associação
+            de guias avulsas no ambiente judicial.
+        </p>
+
+        <h2>PROPOSTA</h2>
+
+        <p>
+            A solução proposta consiste em uma arquitetura automatizada orientada
+            a eventos para processamento de documentos de custas processuais.
+        </p>
+
+        <p>
+            O fluxo inicia-se com o recebimento de mensagens em uma fila de eventos,
+            contendo informações sobre novos documentos processuais.
+            Em seguida, o sistema realiza integração com APIs externas para obtenção
+            do conteúdo textual do documento.
+        </p>
+
+        <p>
+            Após a extração do texto, um modelo de aprendizado de máquina previamente
+            treinado realiza a classificação documental, identificando se o documento
+            corresponde a uma guia de custas processuais.
+        </p>
+
+        <p>
+            Caso o documento seja classificado positivamente, um algoritmo realiza
+            a extração do identificador “Nosso Número”, utilizado para consulta em
+            outra API responsável pela validação da guia.
+        </p>
+
+        <p>
+            Confirmando-se tratar de uma guia do tipo “Avulsa”, o sistema executa
+            automaticamente a associação da guia ao respectivo processo judicial,
+            eliminando etapas manuais atualmente existentes.
+        </p>
+
+        <h2>CONCLUSÃO</h2>
+
+        <p>
+            A proposta apresentada demonstra o potencial da aplicação de tecnologias
+            emergentes no contexto do Poder Judiciário, especialmente na automação
+            de processos operacionais repetitivos.
+        </p>
+
+        <p>
+            A utilização de inteligência artificial, integração distribuída entre
+            sistemas e arquitetura orientada a eventos possibilita maior eficiência,
+            redução de erros e otimização do fluxo de custas processuais.
+        </p>
+
+        <p>
+            Além de contribuir para a modernização tecnológica do Tribunal de Justiça
+            de Rondônia, a solução também evidencia como técnicas de automação
+            inteligente podem ser aplicadas para aprimorar serviços públicos digitais.
+        </p>
+
+        <h2>REFERÊNCIAS</h2>
+
+        <div class="referencias">
+
+            <p>
+                PRESSMAN, Roger S. Engenharia de Software: uma abordagem profissional.
+                8. ed. Porto Alegre: AMGH, 2016.
+            </p>
+
+            <p>
+                SOMMERVILLE, Ian. Engenharia de Software. 10. ed.
+                São Paulo: Pearson, 2019.
+            </p>
+
+            <p>
+                RUSSELL, Stuart; NORVIG, Peter. Inteligência Artificial.
+                3. ed. Rio de Janeiro: Elsevier, 2013.
+            </p>
+
+            <p>
+                FOWLER, Martin. Patterns of Enterprise Application Architecture.
+                Boston: Addison-Wesley, 2002.
+            </p>
+
+            <p>
+                NEWMAN, Sam. Building Microservices.
+                Sebastopol: O’Reilly Media, 2021.
+            </p>
+
+        </div>
+
+    </div>
+
 </body>
 </html>
