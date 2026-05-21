@@ -741,18 +741,8 @@ h1 {
   }
 }
 
-  .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 10px 20px 10px 12px;
-}
-
   .badge-logo {
-  height: 34px;
+  height: 18px;
   width: auto;
   object-fit: contain;
-
-  display: block;
 }
