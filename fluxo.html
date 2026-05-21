@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Fluxo Interativo - Associador Custas</title>
+  <title>IoT - Associador Custas</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -15,12 +15,12 @@
     <header class="header">
       <div class="badge">
         <i class="fa-solid fa-diagram-project"></i>
-        Fluxo interativo
+        IoT
       </div>
       <h1>Associador Custas</h1>
       <p class="subtitle">
-        Pipeline vertical para recebimento, leitura, classificação, validação e associação de guia avulsa de custas.
-        Clique em qualquer etapa para ver o que ela faz.
+        Pipeline para recebimento, leitura, classificação, validação e associação de guia avulsa de custas.
+        Clique em qualquer etapa para detalhes.
       </p>
     </header>
 
@@ -30,15 +30,15 @@
         <button class="step doc active"
           data-step="1"
           data-icon="fa-regular fa-file-lines"
-          data-title="Novo Doc PJE"
+          data-title="Novo Documento no PJE"
           data-role="Evento inicial do fluxo"
-          data-desc="O fluxo começa quando um novo documento é inserido ou identificado no PJe. Esse evento funciona como gatilho para o Associador Custas analisar se o documento pode conter uma guia avulsa de custas."
+          data-desc="O fluxo começa quando um novo documento é inserido no PJe. Esse evento funciona é um GATILHO para o Associador Custas analisar se o documento pode ser uma guia avulsa para ser associada."
           data-inputs="processo_numero, doc_origem_id, fonte_dados"
           data-outputs="Evento recebido, metadados básicos do documento"
-          data-note="Essa etapa não decide nada ainda. Ela apenas inicia o pipeline e entrega os dados mínimos para o orquestrador.">
+          data-note="Essa etapa não decide nada ainda. Ela apenas inicia o pipeline e entrega os dados mínimos para o Associador Custas.">
           <span class="icon"><i class="fa-regular fa-file-lines"></i></span>
           <span>
-            <span class="step-title">Novo Doc PJE</span>
+            <span class="step-title">Novo Documento PJE</span>
             <span class="step-mini">processo_numero · doc_origem_id · fonte_dados</span>
           </span>
         </button>
@@ -55,14 +55,14 @@
           data-icon="fa-solid fa-network-wired"
           data-title="ASSOCIADOR CUSTAS"
           data-role="Orquestrador do fluxo"
-          data-desc="Recebe o evento do documento novo e organiza a próxima ação. Nesta primeira passagem, ele decide que precisa obter o conteúdo textual do documento antes de qualquer classificação."
+          data-desc="Recebe o evento do documento novo e organiza a próxima ação. Nesta primeira passagem, ele obtem o conteúdo textual do documento antes de enviar para classificação."
           data-inputs="processo_numero, doc_origem_id, fonte_dados"
           data-outputs="Chamada para extração de texto"
-          data-note="O Associador Custas funciona como controlador do pipeline, mas agora aparece de forma sequencial, sem setas de retorno.">
+          data-note="O Associador Custas funciona como controlador do pipeline.">
           <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
-            <span class="step-mini">recebe evento e aciona extração</span>
+            <span class="step-mini">Recebe evento e aciona extração</span>
           </span>
         </button>
 
@@ -78,10 +78,10 @@
           data-icon="fa-solid fa-align-left"
           data-title="Extrair Texto"
           data-role="Leitura do conteúdo do documento"
-          data-desc="Consulta o documento de origem e extrai o texto necessário para análise posterior. Essa etapa transforma o documento bruto em uma representação textual utilizável pelo modelo classificador e pelos extratores."
+          data-desc="Consulta o documento de origem e extrai o texto necessário para análise posterior. Essa etapa transforma o documento bruto em uma representação textual utilizável pelo modelo classificador."
           data-inputs="doc_origem_id, fonte_dados"
           data-outputs="texto_doc"
-          data-note="Aqui pode haver chamada para API do PJe, OCR ou mecanismo interno de leitura, dependendo do formato do documento.">
+          data-note="Aqui há a chamada para o sistema de OCR (Prisma).">
           <span class="icon"><i class="fa-solid fa-align-left"></i></span>
           <span>
             <span class="step-title">Extrair Texto</span>
@@ -101,14 +101,14 @@
           data-icon="fa-solid fa-network-wired"
           data-title="ASSOCIADOR CUSTAS"
           data-role="Recebe texto extraído"
-          data-desc="Recebe o texto extraído do documento e prepara a chamada ao modelo classificador. A função desta etapa é coordenar a transição entre leitura do documento e análise semântica."
+          data-desc="Recebe o texto extraído do documento e prepara a chamada ao modelo classificador. A função desta etapa é coordenar a transição entre leitura do documento e análise."
           data-inputs="texto_doc, processo_numero, doc_origem_id"
           data-outputs="Chamada para modelo classificador"
-          data-note="Se o texto vier vazio, ilegível ou insuficiente, aqui pode ser previsto tratamento de erro ou encerramento controlado do fluxo.">
+          data-note="Se o texto vier vazio, ilegível ou insuficiente é analisado o tratamento se com novas tentativas ou encerramento do fluxo.">
           <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
-            <span class="step-mini">encaminha texto para classificação</span>
+            <span class="step-mini">Encaminha texto para classificação</span>
           </span>
         </button>
 
@@ -124,7 +124,7 @@
           data-icon="fa-solid fa-microchip"
           data-title="Modelo Classificador"
           data-role="Identificação de documento de custas"
-          data-desc="Analisa o texto do documento e identifica se ele parece ser uma guia de custas, comprovante relacionado ou outro documento relevante para associação de guia avulsa."
+          data-desc="Analisa o texto do documento e identifica se ele é uma guia de custas, comprovante relacionado ou outro documento relevante para associação de guia avulsa."
           data-inputs="texto_doc"
           data-outputs="isCustas, confiança_classificação, justificativa_modelo"
           data-note="A saída principal é uma decisão do tipo verdadeiro/falso, indicando se o fluxo deve continuar para extração de dados financeiros.">
@@ -147,14 +147,14 @@
           data-icon="fa-solid fa-network-wired"
           data-title="ASSOCIADOR CUSTAS"
           data-role="Decisão de continuidade"
-          data-desc="Recebe o resultado do classificador. Se o documento for identificado como relacionado a custas, o fluxo segue para extração do Nosso Número ou código de barras. Caso contrário, o fluxo pode ser encerrado ou registrado como não aplicável."
+          data-desc="Recebe o resultado do classificador. Se o documento for identificado como relacionado a custas, o fluxo segue para extração do Nosso Número ou Código de Barras. Caso contrário, o fluxo pode ser encerrado/não-aplicável."
           data-inputs="isCustas, confiança_classificação, texto_doc"
           data-outputs="Decisão de continuidade do fluxo"
           data-note="Essa é uma etapa de controle importante: evita tentar validar ou associar documentos que não são guias ou comprovantes de custas.">
           <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
-            <span class="step-mini">decide se o fluxo continua</span>
+            <span class="step-mini">Decide se o fluxo continua</span>
           </span>
         </button>
 
@@ -170,10 +170,10 @@
           data-icon="fa-solid fa-barcode"
           data-title="Extrair Nosso Número / Código de Barras"
           data-role="Extração de identificadores financeiros"
-          data-desc="Busca no texto do documento informações como Nosso Número, linha digitável, código de barras ou outros identificadores necessários para consultar e validar a guia avulsa."
+          data-desc="Busca no texto do documento informações como Nosso Número, código de barras ou outros identificadores necessários para consultar e validar a guia avulsa."
           data-inputs="texto_doc"
-          data-outputs="nosso_numero, codigo_barras, linha_digitavel"
-          data-note="Essa etapa pode usar regex, regras heurísticas ou modelo de extração estruturada para localizar os identificadores.">
+          data-outputs="nosso_numero, codigo_barras"
+          data-note="Essa etapa usa regex, regras heurísticas ou modelo de extração estruturada para localizar os identificadores.">
           <span class="icon"><i class="fa-solid fa-barcode"></i></span>
           <span>
             <span class="step-title">Extrair Nosso Número / Código de Barras</span>
@@ -200,7 +200,7 @@
           <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
-            <span class="step-mini">organiza dados para validação</span>
+            <span class="step-mini">Organiza dados para validação</span>
           </span>
         </button>
 
@@ -246,7 +246,7 @@
           <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
-            <span class="step-mini">decide associação final</span>
+            <span class="step-mini">Decide associação final</span>
           </span>
         </button>
 
@@ -282,7 +282,7 @@
           </div>
           <div>
             <div class="details-kicker" id="detailsKicker">Etapa 1</div>
-            <div class="details-title" id="detailsTitle">Novo Doc PJE</div>
+            <div class="details-title" id="detailsTitle">Novo Documento PJE</div>
           </div>
         </div>
 
@@ -295,7 +295,7 @@
           <div class="section">
             <h3>O que faz</h3>
             <p id="detailsDesc">
-              O fluxo começa quando um novo documento é inserido ou identificado no PJe.
+              O fluxo começa quando um novo documento é inserido no PJe.
             </p>
           </div>
 
@@ -310,7 +310,7 @@
           </div>
 
           <div class="hint" id="detailsNote">
-            Clique em qualquer etapa do fluxo para atualizar este painel.
+            Clique em qualquer etapa do fluxo para exibir detalhes.
           </div>
         </div>
       </aside>
