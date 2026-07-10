@@ -14,7 +14,7 @@
   <main class="page">
     <header class="header">
       <div class="badge">
-        <i class="fa-solid fa-diagram-project"></i>
+        <i class="fa-solid fa-diagram-project shrink-0"></i>
         IoT
       </div>
       <h1>Associador Custas</h1>
@@ -36,7 +36,7 @@
           data-inputs="processo_numero, doc_origem_id, fonte_dados"
           data-outputs="Evento recebido, metadados básicos do documento"
           data-note="Essa etapa não decide nada ainda. Ela apenas inicia o pipeline e entrega os dados mínimos para o Associador Custas.">
-          <span class="icon"><i class="fa-regular fa-file-lines"></i></span>
+          <span class="icon shrink-0"><i class="fa-regular fa-file-lines shrink-0"></i></span>
           <span>
             <span class="step-title">Novo Documento PJE</span>
             <span class="step-mini">processo_numero · doc_origem_id · fonte_dados</span>
@@ -59,7 +59,7 @@
           data-inputs="processo_numero, doc_origem_id, fonte_dados"
           data-outputs="Chamada para extração de texto"
           data-note="O Associador Custas funciona como controlador do pipeline.">
-          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-network-wired shrink-0"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
             <span class="step-mini">Recebe evento e aciona extração</span>
@@ -82,7 +82,7 @@
           data-inputs="doc_origem_id, fonte_dados"
           data-outputs="texto_doc"
           data-note="Aqui há a chamada para o sistema de OCR (Prisma).">
-          <span class="icon"><i class="fa-solid fa-align-left"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-align-left shrink-0"></i></span>
           <span>
             <span class="step-title">Extrair Texto</span>
             <span class="step-mini">doc_origem_id · fonte_dados</span>
@@ -105,7 +105,7 @@
           data-inputs="texto_doc, processo_numero, doc_origem_id"
           data-outputs="Chamada para modelo classificador"
           data-note="Se o texto vier vazio, ilegível ou insuficiente é analisado o tratamento se com novas tentativas ou encerramento do fluxo.">
-          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-network-wired shrink-0"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
             <span class="step-mini">Encaminha texto para classificação</span>
@@ -128,7 +128,7 @@
           data-inputs="texto_doc"
           data-outputs="isCustas, confiança_classificação, justificativa_modelo"
           data-note="A saída principal é uma decisão do tipo verdadeiro/falso, indicando se o fluxo deve continuar para extração de dados financeiros.">
-          <span class="icon"><i class="fa-solid fa-microchip"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-microchip shrink-0"></i></span>
           <span>
             <span class="step-title">Modelo Classificador</span>
             <span class="step-mini">isCustas · confiança · justificativa</span>
@@ -151,7 +151,7 @@
           data-inputs="isCustas, confiança_classificação, texto_doc"
           data-outputs="Decisão de continuidade do fluxo"
           data-note="Essa é uma etapa de controle importante: evita tentar validar ou associar documentos que não são guias ou comprovantes de custas.">
-          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-network-wired shrink-0"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
             <span class="step-mini">Decide se o fluxo continua</span>
@@ -174,7 +174,7 @@
           data-inputs="texto_doc"
           data-outputs="nosso_numero, codigo_barras"
           data-note="Essa etapa usa regex, regras heurísticas ou modelo de extração estruturada para localizar os identificadores.">
-          <span class="icon"><i class="fa-solid fa-barcode"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-barcode shrink-0"></i></span>
           <span>
             <span class="step-title">Extrair Nosso Número / Código de Barras</span>
             <span class="step-mini">nosso_numero · codigo_barras</span>
@@ -197,7 +197,7 @@
           data-inputs="nosso_numero, codigo_barras, processo_numero, fonte_dados"
           data-outputs="Requisição para validação da guia"
           data-note="Se não for encontrado Nosso Número ou código de barras, o fluxo pode registrar pendência para conferência manual.">
-          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-network-wired shrink-0"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
             <span class="step-mini">Organiza dados para validação</span>
@@ -220,7 +220,7 @@
           data-inputs="nosso_numero, codigo_barras"
           data-outputs="status_guia, valor, data_pagamento, dados_validados"
           data-note="Essa etapa reduz risco de associação indevida, pois valida a guia antes da vinculação final ao processo.">
-          <span class="icon"><i class="fa-solid fa-shield-halved"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-shield-halved shrink-0"></i></span>
           <span>
             <span class="step-title">Validar Guia Avulsa</span>
             <span class="step-mini">status_guia · valor · pagamento</span>
@@ -243,7 +243,7 @@
           data-inputs="status_guia, dados_validados, processo_numero, fonte_dados"
           data-outputs="Comando de associação da guia"
           data-note="Se a guia não estiver paga, for inválida ou incompatível, o fluxo pode registrar falha e não realizar associação automática.">
-          <span class="icon"><i class="fa-solid fa-network-wired"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-network-wired shrink-0"></i></span>
           <span>
             <span class="step-title">ASSOCIADOR CUSTAS</span>
             <span class="step-mini">Decide associação final</span>
@@ -266,7 +266,7 @@
           data-inputs="numero_processo, fonte_dados, nosso_numero"
           data-outputs="Guia associada, registro da operação, fim do fluxo"
           data-note="Essa é a etapa final do pipeline. Depois dela, o processo passa a ter a guia corretamente vinculada, conforme a validação realizada.">
-          <span class="icon"><i class="fa-solid fa-link"></i></span>
+          <span class="icon shrink-0"><i class="fa-solid fa-link shrink-0"></i></span>
           <span>
             <span class="step-title">Associar Guia Avulsa</span>
             <span class="step-mini">numero_processo · fonte_dados · nosso_numero</span>
@@ -277,8 +277,8 @@
 
       <aside class="details" id="detailsPanel">
         <div class="details-top">
-          <div class="details-icon" id="detailsIcon">
-            <i class="fa-regular fa-file-lines"></i>
+          <div class="details-icon shrink-0" id="detailsIcon">
+            <i class="fa-regular fa-file-lines shrink-0"></i>
           </div>
           <div>
             <div class="details-kicker" id="detailsKicker">Etapa 1</div>
@@ -359,7 +359,7 @@
 
       const iconClass = step.dataset.icon;
 
-      detailsIcon.innerHTML = `<i class="${iconClass}"></i>`;
+      detailsIcon.innerHTML = `<i class="${iconClass} shrink-0"></i>`;
       detailsKicker.textContent = `Etapa ${step.dataset.step}`;
       detailsTitle.textContent = step.dataset.title;
       detailsRole.textContent = step.dataset.role;
