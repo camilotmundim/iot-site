@@ -256,39 +256,58 @@
 
           <div class="chart-header">
             <span class="chart-kicker">Homologação</span>
-            <h3>101.257 documentos processados</h3>
+            <h3>Documentos processados</h3>
             <p>
-              Distribuição dos documentos ao longo da esteira automatizada de análise,
-              classificação, extração e associação de guias avulsas.
+              Esteira automatizada baseada em arquitetura orientada a eventos,
+              iniciada pelo consumo de mensagens em fila assíncrona, seguida por
+              filtros, validações técnicas e associação final das guias avulsas elegíveis.
             </p>
           </div>
 
-          <div class="donut-wrap">
-            <div class="donut-chart" aria-label="Gráfico de resultados da homologação">
-              <div class="donut-center">
-                <strong>49.802</strong>
-                <span>processos</span>
+          <div class="funnel-chart" aria-label="Funil de resultados da homologação">
+            <div class="funnel-step intake">
+              <span class="funnel-icon"><i class="fa-solid fa-file-lines"></i></span>
+              <div class="funnel-copy">
+                <strong>101.257</strong>
+                <small>documentos recebidos na automação</small>
+                <span class="funnel-secondary">
+                  <strong>49.802</strong>
+                  <small>processos avaliados</small>
+                </span>
               </div>
             </div>
-          </div>
 
-          <div class="chart-legend">
-            <div>
-              <span class="legend-dot ignored"></span>
-              <strong>99.533</strong>
-              <small>ignorados por regras de negócio</small>
+            <div class="funnel-connector"></div>
+
+            <div class="funnel-step ignored">
+              <span class="funnel-icon"><i class="fa-solid fa-filter"></i></span>
+              <div class="funnel-copy">
+                <strong>99.533</strong>
+                <small>documentos ignorados por regras de negócio</small>
+              </div>
+              <span class="funnel-rate">98,30%</span>
             </div>
 
-            <div>
-              <span class="legend-dot errors"></span>
-              <strong>1.697</strong>
-              <small>erros técnicos de OCR ou extração</small>
+            <div class="funnel-connector"></div>
+
+            <div class="funnel-step errors">
+              <span class="funnel-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
+              <div class="funnel-copy">
+                <strong>1.697</strong>
+                <small>erros técnicos de OCR ou extração do NossoNumero</small>
+              </div>
+              <span class="funnel-rate">1,68%</span>
             </div>
 
-            <div>
-              <span class="legend-dot associated"></span>
-              <strong>27</strong>
-              <small>boletos associados automaticamente</small>
+            <div class="funnel-connector highlight"></div>
+
+            <div class="funnel-step associated">
+              <span class="funnel-icon"><i class="fa-solid fa-circle-check"></i></span>
+              <div class="funnel-copy">
+                <strong>27</strong>
+                <small>boletos associados automaticamente</small>
+              </div>
+              <span class="funnel-value">R$ 135.401,29</span>
             </div>
           </div>
 

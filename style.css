@@ -825,123 +825,184 @@ h1 {
   font-size: 13px;
 }
 
-.donut-wrap {
+.funnel-chart {
   display: grid;
-  place-items: center;
-  margin: 28px 0 26px;
+  gap: 0;
+  margin-top: 28px;
   position: relative;
   z-index: 1;
 }
 
-.donut-chart {
-  width: min(310px, 72vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background:
-    conic-gradient(
-      #0ea5e9 0deg 353.87deg,
-      #f5a524 353.87deg 359.90deg,
-      #10b981 359.90deg 360deg
-    );
+.funnel-step {
   display: grid;
-  place-items: center;
-  box-shadow:
-    0 26px 58px rgba(14,165,233,.18),
-    inset 0 0 0 1px rgba(255,255,255,.72);
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 17px 18px;
+  border: 1px solid rgba(37,99,235,.10);
+  background: rgba(255,255,255,.74);
+  box-shadow: 0 14px 34px rgba(31,58,99,.08);
   position: relative;
 }
 
-.donut-chart::after {
+.funnel-step::before,
+.funnel-step::after {
   content: "";
   position: absolute;
-  inset: 18px;
-  border-radius: 50%;
-  background:
-    radial-gradient(circle at 35% 25%, rgba(255,255,255,.95), rgba(246,250,255,.96));
-  box-shadow: inset 0 0 30px rgba(31,58,99,.08);
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 22px solid transparent;
+  border-right: 22px solid transparent;
 }
 
-.donut-center {
-  position: relative;
+.funnel-step::before {
+  bottom: -20px;
+  border-top: 20px solid rgba(37,99,235,.10);
   z-index: 2;
-  width: 62%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+}
+
+.funnel-step::after {
+  bottom: -18px;
+  border-top: 18px solid rgba(255,255,255,.74);
+  z-index: 3;
+}
+
+.funnel-step.intake {
+  width: 100%;
+  border-radius: 22px 22px 16px 16px;
+}
+
+.funnel-step.ignored {
+  width: 90%;
+  justify-self: center;
+  background: linear-gradient(135deg, rgba(14,165,233,.12), rgba(255,255,255,.82));
+}
+
+.funnel-step.ignored::after {
+  border-top-color: #eef9ff;
+}
+
+.funnel-step.errors {
+  width: 72%;
+  justify-self: center;
+  background: linear-gradient(135deg, rgba(245,165,36,.16), rgba(255,255,255,.84));
+}
+
+.funnel-step.errors::after {
+  border-top-color: #fff8ed;
+}
+
+.funnel-step.associated {
+  width: 58%;
+  justify-self: center;
+  border-color: rgba(16,185,129,.30);
+  border-radius: 18px 18px 26px 26px;
+  background: linear-gradient(135deg, rgba(16,185,129,.20), rgba(14,165,233,.10));
+  box-shadow: 0 20px 52px rgba(16,185,129,.16);
+}
+
+.funnel-step.associated::before,
+.funnel-step.associated::after {
+  display: none;
+}
+
+.funnel-connector {
+  width: 2px;
+  height: 26px;
+  justify-self: center;
+  background: linear-gradient(180deg, rgba(14,165,233,.32), rgba(37,99,235,.08));
+}
+
+.funnel-connector.highlight {
+  height: 30px;
+  background: linear-gradient(180deg, rgba(245,165,36,.30), rgba(16,185,129,.48));
+}
+
+.funnel-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 16px;
   display: grid;
   place-items: center;
-  align-content: center;
-  text-align: center;
-  background: rgba(255,255,255,.76);
-  border: 1px solid rgba(37,99,235,.10);
+  background: rgba(37,99,235,.08);
+  color: var(--blue);
+  font-size: 20px;
 }
 
-.donut-center strong {
+.funnel-step.ignored .funnel-icon {
+  background: rgba(14,165,233,.12);
+  color: var(--cyan);
+}
+
+.funnel-step.errors .funnel-icon {
+  background: rgba(245,165,36,.14);
+  color: var(--yellow);
+}
+
+.funnel-step.associated .funnel-icon {
+  background: rgba(16,185,129,.16);
+  color: var(--green);
+}
+
+.funnel-copy strong {
   display: block;
   color: #102033;
-  font-size: clamp(30px, 4vw, 42px);
-  letter-spacing: -0.05em;
+  font-size: clamp(24px, 3vw, 36px);
   line-height: 1;
+  letter-spacing: -0.05em;
 }
 
-.donut-center span {
-  margin-top: 8px;
-  color: rgba(16,32,51,.58);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: .08em;
-}
-
-.chart-legend {
-  display: grid;
-  gap: 12px;
-  position: relative;
-  z-index: 1;
-}
-
-.chart-legend div {
-  display: grid;
-  grid-template-columns: 14px auto;
-  column-gap: 10px;
-  row-gap: 2px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: 16px;
-  background: rgba(255,255,255,.68);
-  border: 1px solid rgba(37,99,235,.08);
-}
-
-.chart-legend strong {
-  color: #102033;
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 15px;
-}
-
-.chart-legend small {
-  grid-column: 2;
-  color: rgba(16,32,51,.62);
+.funnel-copy small {
+  display: block;
+  margin-top: 7px;
+  color: rgba(16,32,51,.64);
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   line-height: 1.45;
 }
 
-.legend-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
+.funnel-secondary {
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  align-items: baseline;
+  gap: 9px;
+  margin-top: 13px;
+  padding: 9px 12px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(37,99,235,.12), rgba(14,165,233,.08));
+  border: 1px solid rgba(37,99,235,.16);
 }
 
-.legend-dot.ignored {
-  background: #0ea5e9;
+.funnel-secondary strong {
+  color: var(--blue);
+  font-size: clamp(22px, 2.8vw, 32px);
 }
 
-.legend-dot.errors {
-  background: #f5a524;
+.funnel-secondary small {
+  margin-top: 0;
+  color: rgba(16,32,51,.66);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
 }
 
-.legend-dot.associated {
-  background: #10b981;
+.funnel-rate,
+.funnel-value {
+  justify-self: end;
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(37,99,235,.10);
+  color: rgba(16,32,51,.70);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.funnel-value {
+  color: #047857;
+  border-color: rgba(16,185,129,.24);
+  background: rgba(236,253,245,.84);
 }
 
 .homologacao-insights {
@@ -1027,6 +1088,34 @@ h1 {
   .homologacao-insights {
     padding: 22px;
     border-radius: 24px;
+  }
+
+  .funnel-step,
+  .funnel-step.ignored,
+  .funnel-step.errors,
+  .funnel-step.associated {
+    width: 100%;
+    grid-template-columns: 42px 1fr;
+    align-items: start;
+  }
+
+  .funnel-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    font-size: 18px;
+  }
+
+  .funnel-rate,
+  .funnel-value {
+    grid-column: 2;
+    justify-self: start;
+    margin-top: 4px;
+  }
+
+  .funnel-secondary {
+    grid-template-columns: 1fr;
+    gap: 3px;
   }
 
   .insight-grid {
