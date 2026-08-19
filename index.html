@@ -46,7 +46,7 @@
 <!--        <li><a href="#arquitetura">Arquitetura</a></li>-->
         <li><a href="#fluxo">Fluxo</a></li>
         <li><a href="#tecnologias">Tecnologias</a></li>
-        <li><a href="#impactos">Impactos</a></li>
+        <li><a href="#resultados">Resultados</a></li>
       </ul>
     </nav>
 
@@ -243,22 +243,107 @@
 
     </section>
 
-    <section id="impactos">
+    <section id="resultados">
 
       <h2>
         <i class="fa-solid fa-bolt shrink-0"></i>
-        Impactos Esperados
+        Resultados obtidos em Homologação
       </h2>
 
-      <ul>
-        <li>Redução significativa do tempo gasto na associação manual.</li>
-        <li>Diminuição de inconsistências entre sistemas.</li>
-        <li>Redução do retrabalho operacional.</li>
-        <li>Aumento da integridade dos dados financeiros.</li>
-        <li>Maior escalabilidade do fluxo de custas processuais.</li>
-        <li>Liberação de servidores para atividades de maior valor agregado.</li>
-        <li>Fortalecimento das iniciativas de Justiça Digital e Justiça 4.0.</li>
-      </ul>
+      <div class="homologacao-dashboard">
+
+        <div class="homologacao-chart-card">
+
+          <div class="chart-header">
+            <span class="chart-kicker">Homologação</span>
+            <h3>101.257 documentos processados</h3>
+            <p>
+              Distribuição dos documentos ao longo da esteira automatizada de análise,
+              classificação, extração e associação de guias avulsas.
+            </p>
+          </div>
+
+          <div class="donut-wrap">
+            <div class="donut-chart" aria-label="Gráfico de resultados da homologação">
+              <div class="donut-center">
+                <strong>49.802</strong>
+                <span>processos</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-legend">
+            <div>
+              <span class="legend-dot ignored"></span>
+              <strong>99.533</strong>
+              <small>ignorados por regras de negócio</small>
+            </div>
+
+            <div>
+              <span class="legend-dot errors"></span>
+              <strong>1.697</strong>
+              <small>erros técnicos de OCR ou extração</small>
+            </div>
+
+            <div>
+              <span class="legend-dot associated"></span>
+              <strong>27</strong>
+              <small>boletos associados automaticamente</small>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="homologacao-insights">
+
+          <div class="insight-card primary">
+            <span>Valor associado</span>
+            <strong>R$ 135.401,29</strong>
+            <small>em boletos identificados e vinculados automaticamente</small>
+          </div>
+
+          <div class="insight-grid">
+            <div class="insight-card">
+              <span>Processos</span>
+              <strong>49.802</strong>
+              <small>processos avaliados pela automação</small>
+            </div>
+
+            <div class="insight-card">
+              <span>Documentos</span>
+              <strong>101.257</strong>
+              <small>documentos recebidos na esteira</small>
+            </div>
+
+            <div class="insight-card">
+              <span>Taxa de filtro</span>
+              <strong>98,30%</strong>
+              <small>documentos descartados corretamente</small>
+            </div>
+
+            <div class="insight-card">
+              <span>Média</span>
+              <strong>R$ 5.014,86</strong>
+              <small>valor médio por boleto associado</small>
+            </div>
+          </div>
+
+          <div class="homologacao-summary">
+            <strong>Resumo dos resultados:</strong>
+            durante a homologação, a solução processou 101.257 documentos vinculados
+            a 49.802 processos. A maior parte dos documentos foi ignorada de forma
+            automatizada por não atender aos critérios da esteira, como ausência de
+            itens inseridos na mensagem, tipo documental não elegível, classificação
+            pelo modelo como documento não relacionado a custas ou identificação de
+            boleto que não correspondia a uma Guia Avulsa. Os erros registrados
+            concentraram-se em falhas técnicas de extração textual, OCR ou identificação
+            do Nosso Número/código de barras. Ao final do fluxo, 27 boletos foram
+            associados automaticamente, totalizando R$ 135.401,29.
+          </div>
+
+        </div>
+
+      </div>
 
     </section>
 
